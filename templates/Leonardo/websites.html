@@ -1,0 +1,58 @@
+{% extends 'Leonardo/base.html' %}
+  {% block body %}
+    <div style="margin-bottom: 30px;text-align: left"><h3>服务器名称：{{ host_obj.name }}  IP地址：{{ host_obj.ip_addr }}</h3></div>
+    <h4 style="text-align: left;margin-left: 20px;">公共站点(一般情况下请在此站点下建立应用程序测试)</h4>
+    <table class="table table-hover" style="margin-left: 20px;text-align: left">
+       <tr style="color:#adadad">
+           <th>站点名称</th>
+           <th>绑定域名</th>
+           <th>应用程序池</th>
+           <th>framework版本</th>
+           <th>  </th>
+       </tr>
+       <tr>
+           {% for public_website in public_websites %}
+           <td>{{ public_website.name }}</td>
+           <td>
+               {% for i in public_website.domain_set.all %}
+                   {{ i.name }}
+               {% endfor %}
+           </td>
+           <td>{{ public_website.app_pool.name }}</td>
+           <td>{{ public_website.app_pool.get_net_version_display }}</td>
+           <td><a href="{% url 'show_app' host_obj.id public_website.id %}">查看应用程序</a></td>
+           {% endfor %}
+       </tr>
+    </table>
+
+    <h4 style="text-align: left; margin-left:20px;">你的私有站点 <a href="{% url 'add_website' host_obj.id %}">新建站点</a></h4>
+    <table class="table table-hover" style="margin-left:20px;text-align: left">
+       <tr style="color:#adadad">
+           <th>站点名称</th>
+           <th>绑定域名</th>
+           <th>应用程序池</th>
+           <th>framework版本</th>
+           <th>  </th>
+       </tr>
+
+       {% for website in website_list %}
+
+             <tr>
+               <td>{{ website.name }}</td>
+               <td>
+               <ul style="list-style-type: none; text-align: left;margin:0; padding:0;">
+                 {% for i in website.domain_set.all %}
+                     <li>{{ i.name }}</li>
+                 {% endfor %}
+               </ul>
+               </td>
+               <td>{{ website.app_pool.name }}</td>
+               <td>{{ website.app_pool.get_net_version_display }}</td>
+               <td><a href="{% url 'show_app' host_id website.id %}">查看应用程序</a></td>
+             </tr>
+
+       {% endfor %}
+       </tr>
+    </table>
+
+  {% endblock %}

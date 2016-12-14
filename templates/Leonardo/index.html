@@ -1,0 +1,19 @@
+{% extends 'Leonardo/base.html' %}
+  {% block body %}
+    <h4>web服务器</h4>
+    <table class="table table-hover">
+       <tr>
+           <th>服务器名称</th>
+           <th>IP地址</th>
+           <th>      </th>
+       </tr>
+       <tr style="text-align: left">
+           {% for host in hosts %}
+           <td>{{ host.name }}</td>
+           <td>{{ host.ip_addr }}</td>
+           <td><a href="{% url 'websites' host.id %}">查看站点</a></td>
+           {% endfor %}
+       </tr>
+    </table>
+
+  {% endblock %}
